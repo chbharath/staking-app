@@ -9,7 +9,7 @@ async function moveBlocks(amount) {
 
         })
     }
-    console.log('Moved $(amount) blocks')
+    console.log(`Moved $(amount) blocks`)
 }
 
 module.exports = {

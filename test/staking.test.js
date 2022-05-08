@@ -4,6 +4,8 @@ const{moveBlocks} = require("../utils/move-blocks")
 const{moveTime} = require("../utils/move-time")
 
 const SECONDS_IN_A_DAY = 86400;
+const SECONDS_IN_A_YEAR = 31449600;
+
 describe("Staking Test", async function () {
     let staking, rewardToken, deployer, dai, stakeAmount
 
@@ -12,7 +14,7 @@ describe("Staking Test", async function () {
         deployer = accounts[0]
         await deployments.fixture(["all"])
         staking = await ethers.getContract("Staking")
-        reward = await ethers.getContract("RewardToken")
+        rewardToken = await ethers.getContract("RewardToken")
         stakeAmount = ethers.utils.parseEther("100000")
 
     })
@@ -21,17 +23,13 @@ describe("Staking Test", async function () {
         await rewardToken.approve(staking.address, stakeAmount)
         await staking.stake(stakeAmount)
         const startingEarned = await staking.earned(deployer.address)
-        console.log(accounts[0])
-        console.log(accounts[1])
-        console.log(accounts[2])
-        console.log(accounts[3])
         console.log(`Starting Earned ${startingEarned}`)
 
-        await moveTime(SECONDS_IN_A_DAY)
+        await moveTime(SECONDS_IN_A_YEAR)
         await moveBlocks(1)
 
         const endingEarned = await staking.earned(deployer.address)
-        console.log('Ending Earned ${endingEarned}')
+        console.log(`Ending Earned ${endingEarned}`)
 
         
     })
